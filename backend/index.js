@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import  session from 'express-session';
 import connectMongo from 'connect-mongodb-session';
-
+import { buildContext } from 'graphql-passport';
 
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from '@apollo/server/express4';
@@ -57,7 +57,7 @@ app.use(
     cors(),
     express.json(),
     expressMiddleware(server, {
-        context: async ({req}) => ({req})
+        context: async ({req, res}) => buildContext({req, res})
     })
 );
 

@@ -15,9 +15,11 @@ import mergedTypeDefs from "./typeDefs/index.js";
 import mergedResolvers from './resolvers/index.js';
 
 import {connectDB} from './db/connectDB.js';
+import {configurePassport} from './passport/passport.config.js';
 
 
 dotenv.config();
+configurePassport();
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -45,16 +47,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const server = new ApolloServer({
-    typeDefs: mergedTypeDefs,
-    resolvers: mergedResolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({httpServer})]
+	typeDefs: mergedTypeDefs,
+	resolvers: mergedResolvers,
+	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
 await server.start();
 
 app.use(
     "/graphql",
-    cors(),
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true
+    }),
     express.json(),
     expressMiddleware(server, {
         context: async ({req, res}) => buildContext({req, res})

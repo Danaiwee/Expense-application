@@ -7,11 +7,21 @@ import LoginPage from "./pages/LoginPage";
 import TransactionPage from "./pages/TransactionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+import { useQuery } from "@apollo/client";
+import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query.js";
+import { Toaster } from 'react-hot-toast';
+
 const App = () => {
-  const authUser = true;
+  const {loading, data, error} = useQuery(GET_AUTHENTICATED_USER);
+
+  console.log("is loading: ", loading);
+  console.log("Authenticated user: ", data);
+  console.log("is Error: ", error);
+  
+  
   return (
     <>
-      {authUser && <Header />}
+      {data?.authUser && <Header />}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginPage />} />
@@ -19,6 +29,7 @@ const App = () => {
         <Route path='/transaction' element={<TransactionPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+      <Toaster />
     </>
   )
 }

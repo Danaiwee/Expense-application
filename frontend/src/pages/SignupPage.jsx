@@ -3,6 +3,10 @@ import InputField from "../components/InputField";
 import RadioButton from "../components/RadioButton";
 import {Link} from 'react-router-dom';
 
+import { useMutation } from "@apollo/client";
+import { SIGN_UP } from "../graphql/mutations/user.mutation.js";
+import { toast } from 'react-hot-toast';
+
 const SignupPage = () => {
   const [signupData, setSignupData] = useState({
     name: '',
@@ -10,6 +14,8 @@ const SignupPage = () => {
     password: '',
     gender: ''
   });
+
+  const [signup, {loading, error}] = useMutation(SIGN_UP)
 
   const handleChange = (e) => {
     const {name, value, type} = e.target;
@@ -31,8 +37,19 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(signupData);
+    try {
+      await signup({
+        variables: {
+          input: signupData
+        }
+      });
+
+    } catch (error) {
+      console.error("Error", error);
+      toast.error(error.message);
+    }
   };
+
   return (
     <div className='h-screen flex justify-center items-center'>
       <div className='flex rounded-lg overflow-hidden z-50 bg-gray-300'>
@@ -61,6 +78,7 @@ const SignupPage = () => {
               />
               <InputField 
                 label='Password'
+                type='password'
                 id='password'
                 name='password'
                 value={signupData.password}

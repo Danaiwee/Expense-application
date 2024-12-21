@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 const userResolver = {
     Mutation: {
-        signup: async(_,{input}, context) => {
+        signUp: async(_,{input}, context) => {
             try {
                 const {username, name, password, gender} = input;
                 if(!username || !name || !password || !gender) {
@@ -15,7 +15,7 @@ const userResolver = {
                     throw new Error("User already exists");
                 }
 
-                const salt = await bcrypt.gensalt(10);
+                const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password, salt);
 
                 //profile avatar from https://avatar-placeholder.iran.liara.run/

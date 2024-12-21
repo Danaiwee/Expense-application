@@ -59,11 +59,13 @@ const userResolver = {
 
         logout: async(_, __, context) => {
             try {
-                context.logout();
+                await context.logout();
                 
                 context.req.session.destroy((error) => {
                     if(error) throw error;
                 });
+
+                context.res.clearCookie("connect.sid");
 
                 return {message: "Logged out seccessfully"};
 

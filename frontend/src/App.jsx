@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/ui/Header";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
@@ -17,16 +17,19 @@ const App = () => {
   console.log("is loading: ", loading);
   console.log("Authenticated user: ", data);
   console.log("is Error: ", error);
-  
+
+  if(loading) return null;
   
   return (
     <>
       {data?.authUser && <Header />}
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route path='/transaction' element={<TransactionPage />} />
+        <Route path='/' element={data.authUser ? <HomePage /> : <Navigate to='/login' />} />
+        <Route path='/login' element={!data.authUser ? <LoginPage /> : <Navigate to='/' />} />
+        <Route path='/signup' element={!data.authUser ? <SignupPage /> : <Navigate to='/' />} />
+        <Route 
+          path='/transaction/:id' 
+          element={data.authUser ? <TransactionPage /> : <Navigate to='/' />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
       <Toaster />
@@ -34,4 +37,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;

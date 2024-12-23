@@ -26,8 +26,31 @@ const transactionResolver = {
                 console.error("Error getting transaction: ", err);
                 throw new Error("Error in getting transaction");
             }
+        },
+
+        categoryStatistics: async(_, __, context) => {
+            if(!context.getUser()) throw new Error("Unauthorized");
+
+            const userId = context.getUser()._id;
+            const transactions = await Transaction.find({userId});
+            const categoryMap = {};
+            
+            transactions.forEach((transaction) => {
+                if(!categoryMap[transaction.category]) {
+                    categoryMap[transaction.category] = 0
+                }
+
+                categoryMap[transaction.category] += transaction.amount
+            })
+            //example output categoryMap = {expense: 125, invesment: 0, saving: 1000};
+
+            return Object.entries(categoryMap).map(([category, totalAmount]) => (
+                {category, totalAmount}
+            ))
+            //example output return [{category: "expense", totalAmount: 125},]
         }
     },
+    
     Mutation: {
         createTransaction: async (_, {input}, context) => {
             try {

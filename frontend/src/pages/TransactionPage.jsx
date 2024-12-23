@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 
 import TransactionFormSkeleton from '../components/skeletons/TransactionFormSkeletion.jsx'
@@ -18,8 +18,10 @@ const TransactionPage = () => {
   console.log("transaction id: ", id );
   console.log('Transaction from ID: ', data);
 
+  const navigate = useNavigate();
+
   const [updateTransaction, {loading: loadingUpdate}] = useMutation(UPDATE_TRANSACTION, {
-    refetchQueries: ['GetTransaction']
+    refetchQueries: ['GetTransaction', 'GetTransactionStatistics']
   });
 
   const [formData, setFormData] = useState({
@@ -55,6 +57,7 @@ const TransactionPage = () => {
       });
 
       toast.success("Update transaction sucessfully");
+      navigate('/');
     } catch (error) {
       console.error("Error in updating transaction", error);
       toast.error(error.message);

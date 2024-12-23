@@ -1,6 +1,14 @@
 import React from "react";
+import toast from 'react-hot-toast';
+
+import { useMutation } from "@apollo/client";
+import {CREATE_TRANSACTION} from '../graphql/mutations/transaction.mutation.js';
 
 const TransactionForm = () => {
+  const [createTransaction, {loading}] = useMutation(CREATE_TRANSACTION, {
+    refetchQueries: ['GetTransactions'],
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -15,7 +23,20 @@ const TransactionForm = () => {
       date: formData.get('date')
     };
 
-    console.log('transactionData', transactionData);
+    try {
+      await createTransaction({
+        variables: {
+          input: transactionData
+        }
+      });
+      
+      form.reset();
+      toast.success("Transaction created succesfully");
+  
+    } catch (error) {
+      toast.error(error.message);
+    }
+    
   };
 
   return (
@@ -83,7 +104,11 @@ const TransactionForm = () => {
             Category
           </label>
           <div className="relative">
-            <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:bg-white focus:border-gray-500">
+            <select 
+              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:bg-white focus:border-gray-500"
+              id='category'
+              name='category'
+            >
               <option value="saving">Saving</option>
               <option value="expense">Expense</option>
               <option value="investment">Investment</option>
@@ -157,8 +182,9 @@ const TransactionForm = () => {
       <button
         className="text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br from-indigo-500 to-indigo-500 hover:from-indigo-600 hover:to-indigo-600"
         type="submit"
+        disabled={loading}
       >
-        Add Transaction
+        {loading ? 'Loading...' : 'Add Transaction'}
       </button>
     </form>
   );

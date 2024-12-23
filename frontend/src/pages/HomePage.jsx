@@ -13,23 +13,23 @@ import {LOGOUT} from '../graphql/mutations/user.mutation.js';
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
-const HomePage = () => {
-  const chartData = {
-    labels: ["Saving", "Expense", "Investment"],
-    datasets: [
-      {
-        label: '%',
-        data: [13, 8, 3],
-        backgroundColor: ['rgba(75,192,192)', 'rgba(255, 99, 132)', 'rgba(54, 132, 235)'],
-        borderColor: ['rgba(75,192,192)', 'rgba(255, 99, 132)', 'rgba(54, 132, 235)'],
-        borderWidth: 1,
-        borderRadius: 30,
-        spacing: 10,
-        cutout: 130,
-      },
-    ], 
-  };
+const chartData = {
+  labels: ["Saving", "Expense", "Investment"],
+  datasets: [
+    {
+      label: '%',
+      data: [13, 8, 3],
+      backgroundColor: ['rgba(75,192,192)', 'rgba(255, 99, 132)', 'rgba(54, 132, 235)'],
+      borderColor: ['rgba(75,192,192)', 'rgba(255, 99, 132)', 'rgba(54, 132, 235)'],
+      borderWidth: 1,
+      borderRadius: 30,
+      spacing: 10,
+      cutout: 130,
+    },
+  ], 
+};
 
+const HomePage = () => {
   const [logout, {loading}] = useMutation(LOGOUT, {
     refetchQueries: ['GetAuthenticatedUser'],
   });

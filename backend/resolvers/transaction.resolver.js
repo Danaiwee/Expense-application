@@ -19,7 +19,7 @@ const transactionResolver = {
 
         transaction: async(_, {transactionId}) => {
             try {
-                const transation = await Transaction.findById(transactionId);
+                const transaction = await Transaction.findById(transactionId);
                 return transaction;
 
             } catch (error) {
@@ -46,9 +46,9 @@ const transactionResolver = {
 
         updateTransaction: async (_, {input}) => {
             try {
-                const updateTransaction = await Transaction.findByIdAndUpdate(input.transactionId, input, {new: true});
+                const updatedTransaction = await Transaction.findByIdAndUpdate(input.transactionId, input, {new: true});
 
-                return updateTransaction;
+                return updatedTransaction;
             } catch (error) {
                 console.error("Error in updating transaction: ", error);
                 throw new Error("Error updating transaction");
@@ -58,8 +58,8 @@ const transactionResolver = {
 
         deleteTransaction: async (_, {transactionId}) => {
             try {
-                const deleteTransaction = await Transaction.findByIdAndDelete(transactionId);
-                return deleteTransaction;
+                const deletedTransaction = await Transaction.findByIdAndDelete(transactionId);
+                return deletedTransaction;
             } catch (error) {
                 console.error("Error deleting transaction: ", error);
                 throw new Error("Error in deleting transaction");

@@ -14,9 +14,7 @@ import { Toaster } from 'react-hot-toast';
 const App = () => {
   const {loading, data, error} = useQuery(GET_AUTHENTICATED_USER);
 
-  console.log("is loading: ", loading);
   console.log("Authenticated user: ", data);
-  console.log("is Error: ", error);
 
   if(loading) return null;
   

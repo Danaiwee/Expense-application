@@ -110,7 +110,6 @@ const HomePage = () => {
     }
   };
 
-
   return (
     <>
       <div 
@@ -128,9 +127,11 @@ const HomePage = () => {
             <MdLogout className='mx-2 size-6 cursor-pointer' onClick={handleLogout} />}
           </div>
           <div className='flex flex-wrap w-full justify-center items-center gap-6'>
+            {data?.categoryStatistics.length > 0 && (
             <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
               <Doughnut data={chartData} />
             </div>
+            )}
             <TransactionForm />
           </div>
             <Cards />

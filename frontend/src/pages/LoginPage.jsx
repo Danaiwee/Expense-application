@@ -63,6 +63,7 @@ const LoginPage = () => {
               <InputField 
                 label='Password'
                 id='password'
+                type="password"
                 name='password'
                 value={loginData.password}
                 onChange={handleChange}

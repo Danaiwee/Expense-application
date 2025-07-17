@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import  session from 'express-session';
 import connectMongo from 'connect-mongodb-session';
+import path from 'path'
 import { buildContext } from 'graphql-passport';
 
 import { ApolloServer } from "@apollo/server";
@@ -20,6 +21,8 @@ import {configurePassport} from './passport/passport.config.js';
 
 dotenv.config();
 configurePassport();
+
+const __dirname = path.resolve();
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -65,6 +68,12 @@ app.use(
         context: async ({req, res}) => buildContext({req, res})
     })
 );
+
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+});
 
 await new Promise((resolve) => httpServer.listen({port: 4000}, resolve));
 await connectDB();

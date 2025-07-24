@@ -1,4 +1,5 @@
-![expense_page-0001](https://github.com/user-attachments/assets/25ad8b94-4972-4b78-b568-5c588abb7017)
+
+![403759728-25ad8b94-4972-4b78-b568-5c588abb7017](https://github.com/user-attachments/assets/613a38d5-6331-4f7a-a805-32c7ccc3de66)
 
 # Expense GQL (Full-Stack Financial Management)
 
